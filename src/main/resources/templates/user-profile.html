@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bug Tracker - User Profile</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css"
+          rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="fragments/footer :: sidebar">
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="fragments/footer :: topbar"
+                 class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">User Profile</h1>
+                </div>
+
+                <!-- Content Row -->
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-5 col-lg-7">
+
+                        <div class="card shadow mb-4" th:object="${user}">
+                            <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                <h6 th:text="'User details:'" class="m-0 font-weight-bold text-white">User Details</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>User First Name</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>User Last Name</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span th:text="*{getFirstName()}">User First Name</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span th:text="*{getLastName()}">User Last Name</span>
+
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <hr class="sidebar-divider my-0 mt-3 mb-3">
+
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>Email</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>Role</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span th:text="*{getEmail()}">Email</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span th:text="${role}">Role</span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-7">
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                <h6 th:text="'Profile Picture'" class="m-0 font-weight-bold text-white">Change
+                                    Profile Picture</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="col-10">
+                                    <small>Current Profile Picture</small>
+                                </div>
+                                <div class="col-10">
+                                    <img th:src="@{/image-resource/{pic}(pic=${user.getProfilePic()})}"
+                                         src="https://source.unsplash.com/QAB-WJcbgJk/60x60" th:width="60" height="60">
+                                </div>
+
+                                <form th:action="@{/change-profile-pic}" id="fileForm" enctype="multipart/form-data"
+                                      method="post">
+                                    <div class="form-group col-10 mt-3">
+                                        <small>Upload Profile Picture</small>
+                                        <div class="row ml-0 mb-3">
+                                            <input type="file" name="profilePic" class="mb-2 mt-2" required>
+                                            <input type="submit" value="Submit"
+                                                   class="btn col-6 btn-primary  btn-block "/>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-5 col-lg-7">
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                <h6 th:text="'Change password'" class="m-0 font-weight-bold text-white">Change
+                                    Password</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div th:if="${#strings.contains(user.getEmail(),'@demo.com')}" class="card-body">
+                                <p>Demo users cannot change password</p>
+                                <p>Safety measure to make others check the site :)</p>
+                                <div class="col-10">
+                                    <small>Enter old Password</small>
+                                </div>
+                                <div class="col-10">
+                                    <input id="password" type=password name="oldPassword">
+
+                                </div>
+
+                                <div class="col-10">
+                                    <small>Password</small>
+                                </div>
+                                <div class="col-10">
+                                    <input id="password1" type=password name="password"
+                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+
+                                </div>
+
+                                <div class="col-10 mt-2">
+                                    <small>Confirm Password</small>
+                                </div>
+                                <div class="col-10">
+                                    <input id="password2" type=password name="password2"
+                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                                </div>
+
+                                <input type=submit class="btn ml-2 mt-3 col-5 btn-primary disabled btn-block"
+                                       value="Change Password">
+                            </div>
+                            <div th:unless="${#strings.contains(user.getEmail(),'@demo.com')}" class="card-body">
+                                <form th:action="@{/change-password}" method="post"
+                                      oninput='up2.setCustomValidity(password2.value != password.value ? "Passwords do not match." : "")'>
+                                    <p th:if="${#httpServletRequest.getParameter('passwordChange')}" class="mt-2">
+                                        Password has been changed</p>
+                                    <p th:if="${#httpServletRequest.getParameter('passwordChange')}=='false'"
+                                       class="mt-2">Incorrect old password</p>
+
+                                    <div class="col-10">
+                                        <small>Enter old Password</small>
+                                    </div>
+                                    <div class="col-10">
+                                        <input id="password" type=password name="oldPassword">
+
+                                    </div>
+
+                                    <div class="col-10">
+                                        <small>Password</small>
+                                    </div>
+                                    <div class="col-10">
+                                        <input id="password1" type=password name="password"
+                                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                               title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+
+                                    </div>
+
+                                    <div class="col-10 mt-2">
+                                        <small>Confirm Password</small>
+                                    </div>
+                                    <div class="col-10">
+                                        <input id="password2" type=password name="password2"
+                                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                               title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                                    </div>
+
+                                    <input type=submit class="btn ml-2 mt-3 col-5 btn-primary  btn-block"
+                                           value="Change Password">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="fragments/footer :: footer"></footer>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+
+<!-- Scroll to Top Button-->
+<a th:replace="fragments/footer :: scroll-to-top" href="#page-top">
+</a>
+
+<!-- Bootstrap core JavaScript-->
+<div th:replace="fragments/footer :: logout-modal"></div>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}" src="../static/vendor/jquery/jquery.min.js"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"
+        src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}" src="../static/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script th:src="@{/vendor/chart.js/Chart.min.js}" src="../static/vendor/chart.js/Chart.min.js"></script>
+
+
+<!-- Script to validate file extensions-->
+<script th:src="@{/js/bootstrapValidator.js}" src="../static/js/bootstrapValidator.js"></script>
+
+// file extension validator
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#fileForm').bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                profilePic: {
+                    validators: {
+                        file: {
+                            extension: 'jpeg,jpg,png,gif',
+                            type: 'image/jpeg,image/png,image/gif',
+                            maxSize: 2048 * 1024,   // 2 MB
+                            message: 'The selected file needs to be jpeg, png or gif - max. size 2MB'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Bug Tracker - Manage User Roles</title>
+
+  <!-- Custom fonts for this template-->
+  <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link th:href="@{/css/sb-admin-2.min.css}" href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" href="../static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="fragments/footer :: sidebar">
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav th:replace="fragments/footer :: topbar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Manage User Roles</h1>
+          </div>
+
+          <!-- Content Row -->
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-4 col-lg-7">
+
+              <form action="#" th:action="@{/manage-roles-update}" class="user" method="post">
+                <div class="card shadow mb-4">
+                  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Select one or more Users</h6>
+                  </div>
+                  <!-- Card Body -->
+
+                  <div class="card-body">
+                    <select class="custom-select" name="users" multiple size="6" required>
+                      <option th:each="dropDownItem : ${users}"
+                              th:value="${dropDownItem.getId()}"
+                              th:text="${dropDownItem.getFirstName()} + ' ' + ${dropDownItem.getLastName()}"/>
+                    </select>
+                  </div>
+                  <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Select the Role to assign</h6>
+                  </div>
+                  <div class="card-body ">
+                    <select class="custom-select"  name="role" size="1" required>
+                      <option th:each="dropDownItem : ${roles}"
+                              th:value="${dropDownItem.getId()}"
+                              th:text="${dropDownItem.getName()}"/>
+                    </select>
+                    <input type="submit" value="Submit" class="btn mt-3 col-xl-5 btn-primary  btn-block ">
+                  </div>
+                </div>
+              </form>
+            </div>
+
+
+            <!-- Personnel Card -->
+            <div class="col-xl-8 col-lg-5">
+              <div class="card shadow mb-4">
+                <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-white">Your Personnel</h6>
+
+
+
+                </div>
+                <div class="card-header bg py-1 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight "><small>All users in Bug Tracker</small></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <table class="table table-hover" id="dataTable">
+                    <thead>
+                    <tr>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">E-mail</th>
+                      <th scope="col">Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="entry : ${list}">
+                      <td th:text="${entry.getFirstName()}">First</td>
+                      <td th:text="${entry.getLastName()}">Last</td>
+                      <td th:text="${entry.getEmail()}">Email</td>
+                      <td th:text="${entry.getRoleName()}">@Role</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Row -->
+
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer th:replace="fragments/footer :: footer"></footer>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a th:replace="fragments/footer :: scroll-to-top" href="#page-top">
+  </a>
+
+  <!-- Bootstrap core JavaScript-->
+  <div th:replace="fragments/footer :: logout-modal"></div>
+
+  <script th:src="@{/vendor/jquery/jquery.min.js}" src="../static/vendor/jquery/jquery.min.js"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}" src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}" src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script th:src="@{/js/sb-admin-2.min.js}" src="../static/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script th:src="@{/vendor/chart.js/Chart.min.js}" src="../static/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}" src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}" src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script th:src="@{/js/datatable.js}" src="../static/js/datatable.js"></script>
+
+</body>
+
+</html>

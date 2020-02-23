@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bug Tracker - Ticket details</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" href="../static/vendor/fontawesome-free/css/all.min.css"
+          rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+          href="../static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="fragments/footer :: sidebar">
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="fragments/footer :: topbar"
+                 class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Content Row -->
+
+                <div class="row">
+
+                    <!-- Ticket Card -->
+                    <div class="col-xl-6 col-lg-5">
+                        <a th:if="${user.getDeveloper().contains(ticket) or ticket.getDeveloper()==null or user.getIdRole() == 1 or user.getIdRole()==2}"
+                           sec:authorize="hasAnyAuthority('Admin', 'Project Manager', 'Developer')"
+                           th:href="@{/ticket?ticketId={id}(id=${ticket.getId()})}" href="edit-ticket.html"
+                           type="submit" class="btn mt-3 col-xl-3 btn-primary mb-3 btn-block ">Edit Ticket</a>
+                        <div class="card shadow mb-4" th:object="${ticket}">
+                            <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                <h6 th:text="'Details for Ticket: #' + ${ticket.getId()}"
+                                    class="m-0 font-weight-bold text-white">Details for
+                                    Ticket Id</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>Ticket title</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>Ticket Description</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span th:text="*{getTitle()}">Ticket Title</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span th:text="*{getDescription()}">Description</span>
+
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <hr class="sidebar-divider my-0 mt-3 mb-3">
+
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>Assigned Developer</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>Submitter</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span th:text="*{getDeveloper() != null} ? *{getDeveloper().getFirstName()} + ' ' + *{getDeveloper().getLastName()} : 'Not assigned'">Assigned Developer</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span th:text="*{getSubmitter().getFirstName()} + ' ' + *{getSubmitter().getLastName()}">Submitter</span>
+
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <hr class="sidebar-divider my-0 mt-3 mb-3">
+
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>Project</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>Ticket Priority</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span th:text="*{getProject().getName()}">Project</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span th:text="*{getTicketPriority().getName()}">Ticket Priority</span>
+
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <hr class="sidebar-divider my-0 mt-3 mb-3">
+
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>Ticket Status</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>Ticket Type</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span th:text="*{getTicketStatus().getName()}">Ticket Status</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span th:text="*{getTicketType().getName()}">Ticket Type</span>
+
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <hr class="sidebar-divider my-0 mt-3 mb-3">
+
+                                <div class="row">
+                                    <div class="col-5">
+                                        <small>Created</small>
+                                    </div>
+                                    <div class="col-7">
+                                        <small>Updated</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <span class="small"
+                                              th:text="${#dates.format(ticket.getCreated(), 'dd-MMM-yyyy HH:mm:ss z')}">Created</span>
+
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="small"
+                                              th:text="${#dates.format(ticket.getUpdated(), 'dd-MMM-yyyy HH:mm:ss z')}">Updated</span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- Divider -->
+                        <hr class="sidebar-divider my-0 mt-3 mb-3">
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+
+                                <div class="card shadow mb-1">
+                                    <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-white">Ticket History</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <table class="table table-hover" id="dataTable1">
+                                            <thead>
+                                            <tr class="d-flex">
+                                                <th scope="col" class="col-sm-2 ">Property</th>
+                                                <th scope="col" class="col-sm-2 ">Old Value</th>
+                                                <th scope="col" class="col-sm-2 ">New Value</th>
+                                                <th scope="col" class="col-3">Updated</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="entry : ${historyList}" class="d-flex">
+                                                <td th:text="${entry.getPropertyName()}" class="col-2 small">Property
+                                                </td>
+                                                <td th:text="${entry.getOldValue()}" class="col-2 small">Old Value</td>
+                                                <td th:text="${entry.getNewValue()}" class="col-2 small">New Value</td>
+                                                <td th:text="${#dates.format(entry.getCreated(), 'dd-MMM-yyyy HH:mm:ss z')}"
+                                                    class="col-3 small">Updated
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-5">
+                        <h5>Add Comment to ticket</h5>
+
+                        <form action="#" th:action="@{/ticket-comment-save}" method="post">
+                            <div class="row ml-0 mb-3">
+                                <input type="hidden" name="ticketId" th:value="${ticket.id}">
+                                <input type="text" name="message" placeholder="Enter comment" class="col-9 "/>
+                                <input type="submit" value="Submit" class="btn ml-3 col-2 btn-primary  btn-block "/>
+
+                            </div>
+
+                        </form>
+
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-white">Ticket Comments</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <table class="table table-hover" id="dataTable2">
+                                    <thead>
+                                    <tr class="d-flex">
+                                        <th scope="col" class="col-3">Commenter</th>
+                                        <th scope="col" class="col-4">Message</th>
+                                        <th scope="col" class="col-3">Created</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="entry : ${list}" class="d-flex">
+                                        <td th:text="${entry.getUser().getFirstName()} + ' ' + ${entry.getUser().getLastName()}"
+                                            class="col-3 small">Commenter
+                                        </td>
+                                        <td th:text="${entry.getMessage()}" class="col-4 small">Message</td>
+                                        <td th:text="${#dates.format(entry.getCreated(), 'dd-MMM-yyyy HH:mm:ss z')}"
+                                            class="col-3 small">Created
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header bg-primary  py-2 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-white">File uploads</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr class="d-flex">
+                                        <th scope="col" class="col-5">File Name</th>
+                                        <th scope="col" class="col-4">Comment</th>
+                                        <th scope="col" class="col-3">Uploaded</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="entry : ${uploadList}" class="d-flex">
+                                        <td class="col-5 small"><a th:text="${entry.getFileName()}"
+                                                                   th:href="@{/download/{ticketId}/{fileId}(ticketId=${entry.getTicket().getId()}, fileId=${entry.getId()})}"
+                                                                   href="#">File Name</a></td>
+                                        <td th:text="${entry.getNote()}" class="col-4 small">Comment</td>
+                                        <td th:text="${#dates.format(entry.getCreated(), 'dd-MMM-yyyy HH:mm:ss z')}"
+                                            class="col-3 small">Created
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+
+                                Upload file
+
+                                <div class="row ml-0 mb-3">
+                                    <form action="#" th:action="@{/ticket-file-save}" id="fileForm"
+                                          enctype="multipart/form-data" method="post">
+                                        <div class="form-group">
+                                        <input type="hidden" name="ticketId" th:value="${ticket.id}">
+                                        <input type="file" name="uploadFile" class="mb-2 mt-2" required>
+                                        <input type="text" name="message" placeholder="Enter comment to file"
+                                               class="col-9 "/>
+                                        <input type="submit" value="Submit"
+                                               class="btn mt-3 col-2 btn-primary  btn-block "/>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="fragments/footer :: footer"></footer>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="fragments/footer :: scroll-to-top" href="#page-top">
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <div th:replace="fragments/footer :: logout-modal"></div>
+
+    <script th:src="@{/vendor/jquery/jquery.min.js}" src="../static/vendor/jquery/jquery.min.js"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"
+            src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"
+            src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/js/sb-admin-2.min.js}" src="../static/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"
+            src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"
+            src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script th:src="@{/js/two-datatable.js}" src="../static/js/two-datatable.js"></script>
+
+    <!-- Script to validate file extensions-->
+    <script th:src="@{/js/bootstrapValidator.js}" src="../static/js/bootstrapValidator.js"></script>
+
+    <!-- file extension validator -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#fileForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    uploadFile: {
+                        validators: {
+                            file: {
+                                extension: 'jpeg,jpg,png,gif',
+                                type: 'image/jpeg,image/png,image/gif',
+                                maxSize: 2048 * 1024,   // 2 MB
+                                message: 'The selected file needs to be jpeg, png or gif - max. size 2MB'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</div>
+</body>
+
+</html>
