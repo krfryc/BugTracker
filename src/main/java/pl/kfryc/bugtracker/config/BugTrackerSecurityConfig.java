@@ -86,45 +86,45 @@ public class BugTrackerSecurityConfig extends WebSecurityConfigurerAdapter imple
     }
 
 
-    @Bean
-    @Description("Thymeleaf template resolver serving HTML 5")
-    public ClassLoaderTemplateResolver templateResolver() {
-
-        ClassLoaderTemplateResolver tres = new ClassLoaderTemplateResolver();
-
-        tres.setPrefix("./templates/");
-        tres.setSuffix(".html");
-        tres.setCacheable(false);
-        tres.setTemplateMode("HTML");
-        tres.setCharacterEncoding("UTF-8");
-
-        return tres;
-    }
-
-    @Bean
-    @Description("Thymeleaf template engine with Spring integration")
-    public SpringTemplateEngine templateEngine() {
-
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.addDialect(new SpringSecurityDialect());
-
-        return templateEngine;
-    }
-
-    @Bean
-    @Description("Thymeleaf view resolver")
-    public ViewResolver viewResolver() {
-
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding("UTF-8");
-        viewResolver.setCache(false);
-        viewResolver.setOrder(1);
-
-        return viewResolver;
-    }
+//    @Bean
+//    @Description("Thymeleaf template resolver serving HTML 5")
+//    public ClassLoaderTemplateResolver templateResolver() {
+//
+//        ClassLoaderTemplateResolver tres = new ClassLoaderTemplateResolver();
+//
+//        tres.setPrefix("./templates/");
+//        tres.setSuffix(".html");
+//        tres.setCacheable(false);
+//        tres.setTemplateMode("HTML");
+//        tres.setCharacterEncoding("UTF-8");
+//
+//        return tres;
+//    }
+//
+//    @Bean
+//    @Description("Thymeleaf template engine with Spring integration")
+//    public SpringTemplateEngine templateEngine() {
+//
+//        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver());
+//        templateEngine.addDialect(new SpringSecurityDialect());
+//
+//        return templateEngine;
+//    }
+//
+//    @Bean
+//    @Description("Thymeleaf view resolver")
+//    public ViewResolver viewResolver() {
+//
+//        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+//
+//        viewResolver.setTemplateEngine(templateEngine());
+//        viewResolver.setCharacterEncoding("UTF-8");
+//        viewResolver.setCache(false);
+//        viewResolver.setOrder(1);
+//
+//        return viewResolver;
+//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
