@@ -2,6 +2,7 @@ package pl.kfryc.bugtracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Value("${default.profile.pic}")
