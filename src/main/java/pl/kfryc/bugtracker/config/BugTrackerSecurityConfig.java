@@ -92,7 +92,7 @@ public class BugTrackerSecurityConfig extends WebSecurityConfigurerAdapter imple
 
         ClassLoaderTemplateResolver tres = new ClassLoaderTemplateResolver();
 
-        tres.setPrefix("templates/");
+        tres.setPrefix("./templates/");
         tres.setSuffix(".html");
         tres.setCacheable(false);
         tres.setTemplateMode("HTML");
