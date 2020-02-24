@@ -40,7 +40,7 @@
                     <p th:if="${message}!=null" th:utext="${message}" class="label h4 label-danger">Logout successful</p>
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form action="#" th:action="@{auth}" th:method="post" class="user">
+                  <form action="#" th:action="@{/auth}" th:method="post" class="user">
                     <div class="form-group">
                       <input type="email" name="username" class="form-control form-control-user" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
 
@@ -61,7 +61,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" th:href="@{register}" href="register.html">Create an Account!</a>
+                    <a class="small" th:href="@{/register}" href="register.html">Create an Account!</a>
                   </div>
 
                   <hr>
