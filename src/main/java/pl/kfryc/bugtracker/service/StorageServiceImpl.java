@@ -1,12 +1,15 @@
 package pl.kfryc.bugtracker.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import pl.kfryc.bugtracker.config.StorageProperties;
 import pl.kfryc.bugtracker.entity.User;
 import pl.kfryc.bugtracker.exception.StorageException;
 
@@ -16,14 +19,18 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-@PropertySource("${classpath*:application.properties}")
 public class StorageServiceImpl implements StorageService {
 
-    @Value("${storage.location}")
     private Path rootLocation;
+
+    @Autowired
+    public StorageServiceImpl(StorageProperties storageProperties) {
+        this.rootLocation = Paths.get(storageProperties.getLocation());
+    }
 
     @Override
     @PostConstruct
@@ -33,6 +40,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (IOException e){
             throw new StorageException("Could not initialize storage location", e);
         }
+        //System.out.println(rootLocation);
     }
 
     @Override
