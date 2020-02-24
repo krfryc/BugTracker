@@ -1,6 +1,7 @@
 package pl.kfryc.bugtracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class StorageServiceImpl implements StorageService {
 
+    @Value("${classpath*:storage.location}")
     private final Path rootLocation;
 
     @Autowired
