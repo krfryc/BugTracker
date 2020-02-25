@@ -100,22 +100,22 @@
 	<build>
 		<!-- To make Free Fonts work and avoid corrupting files by Maven packaging -->
 		<resources>
-			<resource>
-				<directory>${project.sources}</directory>
-				<filtering>true</filtering>
-				<excludes>
-					<exclude>**/*.woff</exclude>
-					<exclude>**/*.ttf</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>${project.sources}</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>**/*.woff</include>
-					<include>**/*.ttf</include>
-				</includes>
-			</resource>
+<!--			<resource>-->
+<!--				<directory>${project.sources}</directory>-->
+<!--				<filtering>true</filtering>-->
+<!--				<excludes>-->
+<!--					<exclude>**/*.woff</exclude>-->
+<!--					<exclude>**/*.ttf</exclude>-->
+<!--				</excludes>-->
+<!--			</resource>-->
+<!--			<resource>-->
+<!--				<directory>${project.sources}</directory>-->
+<!--				<filtering>false</filtering>-->
+<!--				<includes>-->
+<!--					<include>**/*.woff</include>-->
+<!--					<include>**/*.ttf</include>-->
+<!--				</includes>-->
+<!--			</resource>-->
 			<!-- To make Maven package resource directory -->
 			<resource>
 				<directory>src/main/resources</directory>
@@ -123,7 +123,7 @@
 			</resource>
 			<!-- To make Maven package upload images directory -->
 			<resource>
-				<directory>uploads</directory>
+				<directory>files</directory>
 				<filtering>false</filtering>
 			</resource>
 		</resources>
