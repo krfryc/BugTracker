@@ -121,6 +121,11 @@
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 			</resource>
+			<!-- To make Maven package upload images directory -->
+			<resource>
+				<directory>uploads</directory>
+				<filtering>false</filtering>
+			</resource>
 		</resources>
 		<!-- End of Free Fonts fix -->
 
