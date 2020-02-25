@@ -132,7 +132,7 @@ public class BugTrackerController {
     }
 
     @PostMapping("/change-profile-pic")
-    public String changeProfilePic(@RequestParam("uploads/profilePic") MultipartFile file) {
+    public String changeProfilePic(@RequestParam("profilePic") MultipartFile file) {
         User user = getUser();
         user.setProfilePic(storageService.storeProfilePic(file, user));
 
