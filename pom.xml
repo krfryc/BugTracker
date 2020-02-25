@@ -119,7 +119,7 @@
 			<!-- To make Maven package resource directory -->
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 			</resource>
 		</resources>
 		<!-- End of Free Fonts fix -->
