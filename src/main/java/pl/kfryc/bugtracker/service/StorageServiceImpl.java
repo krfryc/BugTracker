@@ -1,9 +1,6 @@
 package pl.kfryc.bugtracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+/** TODO: process static image files in cloud (AWS or other data stores)
+    as Heroku does not store static files other than jar */
 
 @Service
 public class StorageServiceImpl implements StorageService {
