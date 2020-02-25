@@ -46,8 +46,10 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.19</version>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -113,6 +115,11 @@
 					<include>**/*.woff</include>
 					<include>**/*.ttf</include>
 				</includes>
+			</resource>
+			<!-- To make Maven package resource directory -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<!-- End of Free Fonts fix -->
