@@ -93,6 +93,14 @@
 			<artifactId>spring-session</artifactId>
 			<version>1.3.5.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.11.732</version>
+		</dependency>
+
+
 	</dependencies>
 
 
@@ -100,22 +108,6 @@
 	<build>
 		<!-- To make Free Fonts work and avoid corrupting files by Maven packaging -->
 		<resources>
-<!--			<resource>-->
-<!--				<directory>${project.sources}</directory>-->
-<!--				<filtering>true</filtering>-->
-<!--				<excludes>-->
-<!--					<exclude>**/*.woff</exclude>-->
-<!--					<exclude>**/*.ttf</exclude>-->
-<!--				</excludes>-->
-<!--			</resource>-->
-<!--			<resource>-->
-<!--				<directory>${project.sources}</directory>-->
-<!--				<filtering>false</filtering>-->
-<!--				<includes>-->
-<!--					<include>**/*.woff</include>-->
-<!--					<include>**/*.ttf</include>-->
-<!--				</includes>-->
-<!--			</resource>-->
 			<!-- To make Maven package resource directory -->
 			<resource>
 				<directory>src/main/resources</directory>

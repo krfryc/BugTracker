@@ -1,8 +1,16 @@
 package pl.kfryc.bugtracker.service;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +19,8 @@ import pl.kfryc.bugtracker.entity.User;
 import pl.kfryc.bugtracker.exception.StorageException;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -18,14 +28,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 
-/** TODO: process static image files in cloud (AWS or other data stores)
-    as Heroku does not store static files other than jar */
 
 @Service
 public class StorageServiceImpl implements StorageService {
 
     private Path rootLocation;
+
+    private AmazonS3 s3client;
+
+    @Value("${amazonProperties.endpointURL}")
+    private String endpointUrl;
+
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
+
+    @Value("${amazonProperties.accessKey}")
+    private String accessKey;
+
+    @Value("${amazonProperties.secretKey}")
+    private String secretKey;
+
 
     @Autowired
     public StorageServiceImpl(StorageProperties storageProperties) {
@@ -35,6 +59,14 @@ public class StorageServiceImpl implements StorageService {
     @Override
     @PostConstruct
     public void init() {
+
+        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+        this.s3client = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.EU_CENTRAL_1)
+                .build();
+
         try{
             Files.createDirectories(rootLocation);
         } catch (IOException e){
@@ -50,13 +82,11 @@ public class StorageServiceImpl implements StorageService {
         try{
             if(file.isEmpty()){
                 throw new StorageException("Failed to store empty file " + fileName);
-            }
-            if(fileName.contains("..")){
+            } else if(fileName.contains("..")){
                 // This is a security check
                 throw new StorageException("Cannot store file with relative path outside current directory" + fileName);
-            }
-            try(InputStream inputStream = file.getInputStream()){
-                Files.copy(inputStream, this.rootLocation.resolve(ticketId+"\\"+fileName), StandardCopyOption.REPLACE_EXISTING);
+            } else {
+                uploadFileTos3bucket(ticketId + "/" + fileName, convertMultiPartToFile(file));
             }
 
         } catch (IOException e){
@@ -103,22 +133,33 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Path load(String filename) {
-        return rootLocation.resolve(filename);
-    }
-
-    @Override
-    public Resource loadImage(String filename) {
+    public byte[] load(String dir, String filename) throws IOException {
         try{
-            Path file = rootLocation.resolve("profilePic\\"+filename);
-            Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() || resource.isReadable()){
-                return resource;
-            } else {
-                throw new RuntimeException("Could not find the image");
-            }
+            s3client.getObject(bucketName, dir+"/"+filename);
+            InputStream in = s3client.getObject(bucketName, dir+"/"+filename).getObjectContent();
+
+            return IOUtils.toByteArray(in);
         } catch (MalformedURLException e){
             throw new RuntimeException("Failed to load image");
         }
     }
+
+    // private function
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
+
+    private void uploadFileTos3bucket(String fileName, File file) {
+        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
+
+    private String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+    }
+
 }

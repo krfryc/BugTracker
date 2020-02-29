@@ -1,7 +1,6 @@
 package pl.kfryc.bugtracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,9 +22,6 @@ import pl.kfryc.bugtracker.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Controller
@@ -569,18 +565,20 @@ public class BugTrackerController {
 
     @GetMapping("/image-resource/{filename}")
     @ResponseBody
-    public ResponseEntity<Resource> getImageAsResource(@PathVariable String filename, HttpServletResponse response) {
+    public ResponseEntity<byte[]> getImageAsResource(@PathVariable String filename, HttpServletResponse response) throws IOException {
 
-        Resource file = storageService.loadImage(filename);
+
+
+        byte[] file = storageService.load("profilePic" ,filename);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename+"\"")
                 .body(file);
     }
 
     @GetMapping("/download/{ticketId}/{fileId}")
     @ResponseBody
-    public void getFile(@PathVariable String ticketId , @PathVariable String fileId, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public ResponseEntity<byte[]> getFile(@PathVariable String ticketId , @PathVariable String fileId, HttpServletResponse response, HttpServletRequest request, Model model) throws IOException{
 
         User user = getUser();
 
@@ -601,19 +599,13 @@ public class BugTrackerController {
             // Check if the user has access to the ticket or is Admin (idRole = 1) or Project Manager (idRole = 2) for the ticket's project
 
             if(user.getDeveloper().contains(ticket) || user.getSubmitter().contains(ticket) || user.getIdRole() == 1 || (user.getIdRole() == 2 && user.getProjects().contains(ticket.getProject()))){
-                Path file = Paths.get(storageProperties.getLocation() + "\\" + ticketId, ticketFiles.getFileName());
-
-                if(Files.exists(file)){
-                    response.addHeader("Content-Disposition", "attachment; filename="+ file.getFileName());
-                    try{
-                        Files.copy(file, response.getOutputStream());
-                        response.getOutputStream().flush();
-                        response.getOutputStream().close();
-                    } catch (IOException e){
-                        System.out.println("Error: " + e.getMessage());
-                        throw new FileNotFoundException("There is no such file on server");
-                    }
-
+                try{
+                    byte[] file = storageService.load(ticketId, ticketFiles.getFileName());
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ticketFiles.getFileName()+"\"")
+                            .body(file);
+                } catch (IOException e){
+                    throw new RuntimeException("Failed to load file from server: " + e.getMessage());
                 }
 
             } else {

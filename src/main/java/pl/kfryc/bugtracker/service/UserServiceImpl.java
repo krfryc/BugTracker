@@ -2,7 +2,6 @@ package pl.kfryc.bugtracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +19,6 @@ import pl.kfryc.bugtracker.entity.Role;
 import pl.kfryc.bugtracker.entity.User;
 import pl.kfryc.bugtracker.entity.UserRole;
 import pl.kfryc.bugtracker.user.BugTrackerUser;
-
 
 import java.util.ArrayList;
 import java.util.Collection;
