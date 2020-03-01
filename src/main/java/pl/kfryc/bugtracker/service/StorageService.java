@@ -1,10 +1,9 @@
 package pl.kfryc.bugtracker.service;
 
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import pl.kfryc.bugtracker.entity.User;
 
-import java.nio.file.Path;
+import java.io.IOException;
 
 public interface StorageService {
 
@@ -14,8 +13,6 @@ public interface StorageService {
 
     String storeProfilePic(MultipartFile file, User user);
 
-    Path load(String filename);
-
-    Resource loadImage(String filename);
+    byte[] load(String dir, String filename) throws IOException;
 
 }
