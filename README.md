@@ -1,7 +1,15 @@
 # BugTracker
- BugTracker - create, manage and handle bug tickets
 
+Deployed application link: http://bugtracker-env.eba-nupzmkkp.eu-central-1.elasticbeanstalk.com/
+
+ BugTracker - create, record and manage bug tickets (can be changed to any other ticketing system)
+ 
 Commit full version Bug Tracker v1.0
+
+Technology: Java Spring Boot, Bootstrap 4 (Javascript and CSS)
+Deployed on: AWS
+
+
 Contains the following functions:
 - Project - create new projects and assign users (available for admin and project managers)
 
@@ -10,7 +18,11 @@ Contains the following functions:
 - Registration - create new accounts (the user role will be set to default with no project assigned - cannot submitt tickets)
 
 - Role management: admin (can access all contets of the webpage), project manager (can access all contents of webpage only for assigned procjets), developer (can access to assigned projects and tickets content) and submitter (tester - can access contents of projects and submitted contents).
+
 - Ticket history tracker - logs all field changes made within ticket.
+
 - File management - files are accessed and maintained in AWS S3 bucket - profile picutres and attachments for tickets.
+
 - User profile - change password (not available in demo accounts) and profile picture 
+
 - Charts presentation - shows ticket data depending on user and role. It will show only revelant data for the user (only Admin can see all data)
