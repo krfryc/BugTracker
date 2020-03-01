@@ -2,8 +2,6 @@ package pl.kfryc.bugtracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -110,23 +108,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new AuthUserDetails(user, mapRoleToAuthorities(roleRepository.findById(user.getIdRole())), true);
     }
 
-    @Override
-    @Transactional
-    public Page<UserRole> findAllUserRole(Pageable pageable) {
-        return userRepository.findAllUserRole(pageable);
-    }
-
 
     @Override
     @Transactional
     public List<UserRole> findAllUserRole() {
         return userRepository.findAllUserRole();
-    }
-
-
-    @Override
-    public Page<UserRole> findUserRoleByProjectId(int projectId, Pageable pageable) {
-        return userRepository.findUserRoleByProjectId(projectId, pageable);
     }
 
     @Override

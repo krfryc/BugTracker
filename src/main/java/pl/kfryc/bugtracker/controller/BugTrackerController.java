@@ -539,14 +539,12 @@ public class BugTrackerController {
     @PostMapping("/ticket-comment-save")
     public String saveTicketComment(@RequestParam("ticketId") int ticketId,
                                     @RequestParam("message") String message) {
+        if(!message.equals("")){
+            Ticket ticket = ticketService.findById(ticketId);
+            TicketComment ticketComment = new TicketComment(ticket, message, getUser(), new Date());
+            ticketService.save(ticketComment);
 
-        Ticket ticket = ticketService.findById(ticketId);
-
-        TicketComment ticketComment = new TicketComment(ticket, message, getUser(), new Date());
-
-        ticketService.save(ticketComment);
-
-
+        }
         return "redirect:/ticket-details?ticketId=" + ticketId;
     }
 

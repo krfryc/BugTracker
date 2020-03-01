@@ -1,8 +1,6 @@
 package pl.kfryc.bugtracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.kfryc.bugtracker.dao.ProjectRepository;
 import pl.kfryc.bugtracker.entity.Project;
@@ -30,8 +28,4 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.save(project);
     }
 
-    @Override
-    public Page<Project> findAll(Pageable pageable) {
-        return projectRepository.findAllByOrderByName(pageable);
-    }
 }

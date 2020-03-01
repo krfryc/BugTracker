@@ -72,7 +72,6 @@ public class StorageServiceImpl implements StorageService {
         } catch (IOException e){
             throw new StorageException("Could not initialize storage location", e);
         }
-        //System.out.println(rootLocation);
     }
 
     @Override
@@ -106,7 +105,7 @@ public class StorageServiceImpl implements StorageService {
             extension = fileName.substring(i);
         }
 
-        // To avoid clashing of possible names id (user email as unique variable) will be hashed
+        // To avoid clashing of possible names
         String hash = Math.abs(user.getEmail().hashCode())+extension;
         try{
             if(file.isEmpty()){

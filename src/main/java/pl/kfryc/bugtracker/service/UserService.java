@@ -1,7 +1,5 @@
 package pl.kfryc.bugtracker.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,10 +26,8 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAllUsers();
 
-    Page<UserRole> findAllUserRole(Pageable pageable);
     List<UserRole> findAllUserRole();
 
-    Page<UserRole> findUserRoleByProjectId(int projectId, Pageable pageable);
     List<UserRole> findUserRoleByProjectId(int projectId);
 
     Collection<? extends GrantedAuthority> mapRoleToAuthorities(Optional<Role> JpaRoles);

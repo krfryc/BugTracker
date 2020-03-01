@@ -1,7 +1,5 @@
 package pl.kfryc.bugtracker.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import pl.kfryc.bugtracker.entity.Project;
 
 import java.util.List;
@@ -14,5 +12,4 @@ public interface ProjectService {
 
     void save(Project project);
 
-    Page<Project> findAll(Pageable pageable);
 }
