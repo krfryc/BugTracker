@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 public class StorageProperties {
 
-    @Value("${classpath*:storage.location}")
+    @Value("${storage.location}")
     private String location;
 
 }

@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Value("${classpath*:default.profile.pic}")
+    @Value("${default.profile.pic}")
     private String defaultProfilePic;
 
     @Autowired
