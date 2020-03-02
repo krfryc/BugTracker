@@ -1,6 +1,8 @@
 package pl.kfryc.bugtracker.entity.ticket;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.kfryc.bugtracker.entity.User;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ticket_comments")
+@Getter
+@Setter
 public class TicketComment {
 
     @Id
@@ -29,8 +33,6 @@ public class TicketComment {
     @Column(name = "created")
     private Date created;
 
-    // Constructors
-
 
     public TicketComment() {
     }
@@ -42,46 +44,4 @@ public class TicketComment {
         this.created = created;
     }
 
-    // Getters and setters
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
 }

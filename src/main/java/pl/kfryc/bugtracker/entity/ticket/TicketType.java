@@ -1,10 +1,15 @@
 package pl.kfryc.bugtracker.entity.ticket;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "ticket_type")
+@Getter
+@Setter
 public class TicketType {
 
     @Id
@@ -19,8 +24,6 @@ public class TicketType {
     private Set<Ticket> ticket;
 
 
-    // == constructors ==
-
     public TicketType() {
     }
 
@@ -33,30 +36,4 @@ public class TicketType {
         this.ticket = ticket;
     }
 
-// == getters and setters ==
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Set<Ticket> getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Set<Ticket> ticket) {
-        this.ticket = ticket;
-    }
 }

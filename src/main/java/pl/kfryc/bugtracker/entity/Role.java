@@ -1,9 +1,14 @@
 package pl.kfryc.bugtracker.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "role")
+@Getter
+@Setter
 public class Role {
 
     @Id
@@ -15,34 +20,11 @@ public class Role {
     private String name;
 
 
-    // == constructors ==
-
     public Role() {
     }
 
     public Role(String name) {
         this.name = name;
-    }
-
-
-
-    // == getters and setters ==
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
 }

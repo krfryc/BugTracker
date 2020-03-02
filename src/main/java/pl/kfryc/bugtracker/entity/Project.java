@@ -1,6 +1,8 @@
 package pl.kfryc.bugtracker.entity;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.kfryc.bugtracker.entity.ticket.Ticket;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "projects")
+@Getter
+@Setter
 public class Project {
 
     @Id
@@ -30,8 +34,6 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private Set<Ticket> tickets;
-
-    // Constructors
 
 
     public Project() {
@@ -56,52 +58,8 @@ public class Project {
         this.tickets = tickets;
     }
 
-    // Functions
-
     public void addUser(User user){
         users.add(user);
     }
 
-    // Getters and setters
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    public Set<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 }

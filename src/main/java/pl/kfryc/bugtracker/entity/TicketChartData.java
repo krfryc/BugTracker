@@ -1,9 +1,14 @@
 package pl.kfryc.bugtracker.entity;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.*;
 
 // Helper class to gather data for charts
+@Getter
+@Setter
 public class TicketChartData {
 
     public static class TypesData {
@@ -11,13 +16,13 @@ public class TicketChartData {
         public String name;
         public int count = 0;
 
-        // constructors
+
         public TypesData(int id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        // Functions
+
         public void addToCount() {
             count++;
         }
@@ -47,13 +52,13 @@ public class TicketChartData {
         public String name;
         public int count = 0;
 
-        // constructors
+
         public StatusData(int id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        // Functions
+
         public void addToCount() {
             count++;
         }
@@ -84,13 +89,13 @@ public class TicketChartData {
         public String name;
         public int count = 0;
 
-        // constructors
+
         public PriorityData(int id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        // Functions
+
         public void addToCount() {
             count++;
         }
@@ -121,13 +126,13 @@ public class TicketChartData {
         public String name;
         public int count = 0;
 
-        // constructors
+
         public ProjectData(int id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        // Functions
+
         public void addToCount() {
             count++;
         }
@@ -159,8 +164,6 @@ public class TicketChartData {
     private Set<ProjectData> projects;
 
 
-    // Constructors
-
     public TicketChartData() {
         types = new HashSet<>();
         statuses = new HashSet<>();
@@ -168,7 +171,7 @@ public class TicketChartData {
         projects = new HashSet<>();
     }
 
-    // Functions
+
     public List<String> listTypes() {
         List<String> list = new ArrayList<>();
         List<TypesData> tempList = new ArrayList<>(types);
@@ -294,38 +297,4 @@ public class TicketChartData {
         return Collections.max(countProjects());
     }
 
-    // Getters and setters
-
-
-    public Set<TypesData> getTypes() {
-        return types;
-    }
-
-    public void setTypes(Set<TypesData> types) {
-        this.types = types;
-    }
-
-    public Set<StatusData> getStatuses() {
-        return statuses;
-    }
-
-    public void setStatuses(Set<StatusData> statuses) {
-        this.statuses = statuses;
-    }
-
-    public Set<PriorityData> getPriorities() {
-        return priorities;
-    }
-
-    public void setPriorities(Set<PriorityData> priorities) {
-        this.priorities = priorities;
-    }
-
-    public Set<ProjectData> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(Set<ProjectData> projects) {
-        this.projects = projects;
-    }
 }

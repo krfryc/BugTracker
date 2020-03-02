@@ -1,6 +1,7 @@
 package pl.kfryc.bugtracker.entity;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.Setter;
 import pl.kfryc.bugtracker.entity.ticket.Ticket;
 import pl.kfryc.bugtracker.entity.ticket.TicketComment;
 import pl.kfryc.bugtracker.entity.ticket.TicketFiles;
@@ -10,6 +11,8 @@ import java.util.*;
 
 @Entity
 @Table(name="users")
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -53,10 +56,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<TicketFiles> files;
 
-
-    // == Constructors ==
-
-
     public User() {
     }
 
@@ -79,8 +78,6 @@ public class User {
         this.profilePic = profilePic;
     }
 
-    // == Functions ==
-
     public void addProject(Project project){
         projects.add(project);
     }
@@ -98,8 +95,6 @@ public class User {
         return null;
     }
 
-    // == Equal / HashCode ==
-
     @Override
     public int hashCode() {
         return Objects.hash(this.id);
@@ -111,109 +106,5 @@ public class User {
         if(obj == null || (getClass() !=obj.getClass() && obj.getClass() != UserRole.class)) return false;
         return this.id == ((UserRole) obj).getId();
     }
-
-    // == getters/setters ==
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
-    }
-
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
-    }
-
-    public Set<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(HashSet<Project> projects) {
-        this.projects = projects;
-    }
-
-    public void setProjects(Set<Project> projects) {
-        this.projects = projects;
-    }
-
-    public Set<Ticket> getSubmitter() {
-        return submitter;
-    }
-
-    public void setSubmitter(Set<Ticket> submitter) {
-        this.submitter = submitter;
-    }
-
-    public Set<Ticket> getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(Set<Ticket> developer) {
-        this.developer = developer;
-    }
-
-    public Set<TicketComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<TicketComment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<TicketFiles> getFiles() {
-        return files;
-    }
-
-    public void setFiles(Set<TicketFiles> files) {
-        this.files = files;
-    }
-
 
 }

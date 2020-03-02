@@ -1,6 +1,8 @@
 package pl.kfryc.bugtracker.entity.ticket;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.kfryc.bugtracker.entity.Project;
 import pl.kfryc.bugtracker.entity.User;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tickets")
+@Getter
+@Setter
 public class Ticket {
 
 
@@ -62,8 +66,6 @@ public class Ticket {
 
     @OneToMany(mappedBy = "ticket")
     private Set<TicketFiles> files;
-
-    // Constructors
 
 
     public Ticket() {
@@ -118,124 +120,6 @@ public class Ticket {
         this.updated = updated;
         this.comments = comments;
         this.history = history;
-    }
-
-    // Functions
-
-
-    // Getters and setters
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public TicketType getTicketType() {
-        return ticketType;
-    }
-
-    public void setTicketType(TicketType ticketType) {
-        this.ticketType = ticketType;
-    }
-
-    public TicketPriority getTicketPriority() {
-        return ticketPriority;
-    }
-
-    public void setTicketPriority(TicketPriority ticketPriority) {
-        this.ticketPriority = ticketPriority;
-    }
-
-    public TicketStatus getTicketStatus() {
-        return ticketStatus;
-    }
-
-    public void setTicketStatus(TicketStatus ticketStatus) {
-        this.ticketStatus = ticketStatus;
-    }
-
-    public User getSubmitter() {
-        return submitter;
-    }
-
-    public void setSubmitter(User submitter) {
-        this.submitter = submitter;
-    }
-
-    public User getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(User developer) {
-        this.developer = developer;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    public Set<TicketComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<TicketComment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<TicketHistory> getHistory() {
-        return history;
-    }
-
-    public void setHistory(Set<TicketHistory> history) {
-        this.history = history;
-    }
-
-    public Set<TicketFiles> getFiles() {
-        return files;
-    }
-
-    public void setFiles(Set<TicketFiles> files) {
-        this.files = files;
     }
 }
 

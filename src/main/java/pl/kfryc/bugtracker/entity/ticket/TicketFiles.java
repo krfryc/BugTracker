@@ -1,6 +1,8 @@
 package pl.kfryc.bugtracker.entity.ticket;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.kfryc.bugtracker.entity.User;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ticket_attachments")
+@Getter
+@Setter
 public class TicketFiles {
 
     @Id
@@ -32,8 +36,6 @@ public class TicketFiles {
     @Column(name = "created")
     private Date created;
 
-    // Constructors
-
     public TicketFiles() {
     }
 
@@ -45,54 +47,4 @@ public class TicketFiles {
         this.created = created;
     }
 
-    // Getters and setters
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
 }

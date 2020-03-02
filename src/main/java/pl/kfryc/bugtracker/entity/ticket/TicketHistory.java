@@ -1,10 +1,15 @@
 package pl.kfryc.bugtracker.entity.ticket;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "ticket_history")
+@Getter
+@Setter
 public class TicketHistory {
 
     @Id
@@ -28,9 +33,6 @@ public class TicketHistory {
     @Column(name = "created")
     private Date created;
 
-
-    // constructors
-
     public TicketHistory() {
     }
 
@@ -42,54 +44,4 @@ public class TicketHistory {
         this.created = created;
     }
 
-    // getters and setters
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public String getOldValue() {
-        return oldValue;
-    }
-
-    public void setOldValue(String oldValue) {
-        this.oldValue = oldValue;
-    }
-
-    public String getNewValue() {
-        return newValue;
-    }
-
-    public void setNewValue(String newValue) {
-        this.newValue = newValue;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
 }

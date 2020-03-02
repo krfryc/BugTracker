@@ -1,9 +1,14 @@
 package pl.kfryc.bugtracker.entity;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
 // helper class used to store User and Role left join SQL query
+@Getter
+@Setter
 public class UserRole {
 
     private int id;
@@ -41,38 +46,6 @@ public class UserRole {
             return false;
         }
         return Objects.equals(this.getId(), ((User) obj).getId());
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String role) {
-        this.roleName = role;
     }
 
 }

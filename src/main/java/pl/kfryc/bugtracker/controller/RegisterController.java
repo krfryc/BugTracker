@@ -66,17 +66,6 @@ public class RegisterController {
         }
 
         if(bindingResult.hasErrors()){
-
-//            // For debugging register form errors
-//            System.out.println("I am here! Error" + bindingResult.getErrorCount());
-//            for (Object object: bindingResult.getAllErrors()) {
-//                if(object instanceof FieldError){
-//                    FieldError fieldError = (FieldError) object;
-//                    System.out.println(fieldError.getCode());
-//                    System.out.println(fieldError.getField());
-//                    System.out.println(fieldError.getRejectedValue());
-//                }
-//            }
             return "register";
         }
 
