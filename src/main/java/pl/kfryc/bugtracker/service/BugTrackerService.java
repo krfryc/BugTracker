@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.kfryc.bugtracker.component.RoleCheckInterceptor;
 import pl.kfryc.bugtracker.component.UserChangeInterceptor;
@@ -14,8 +13,6 @@ import pl.kfryc.bugtracker.entity.*;
 import pl.kfryc.bugtracker.entity.ticket.*;
 import pl.kfryc.bugtracker.exception.FileNotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
@@ -86,7 +83,6 @@ public class BugTrackerService {
         return "index";
     }
 
-    @GetMapping("/manage-roles")
     public String manageRoles(Model model) {
 
 
@@ -104,7 +100,6 @@ public class BugTrackerService {
 
     }
 
-    @GetMapping("/user")
     public String userProfile(Model model) {
 
         User user = getUser();
@@ -116,8 +111,7 @@ public class BugTrackerService {
         return "user-profile";
     }
 
-    @PostMapping("/change-profile-pic")
-    public String changeProfilePic(@RequestParam("profilePic") MultipartFile file) {
+    public String changeProfilePic(MultipartFile file) {
         User user = getUser();
         user.setProfilePic(storageService.storeProfilePic(file, user));
 
@@ -128,8 +122,7 @@ public class BugTrackerService {
         return "redirect:/user";
     }
 
-    @PostMapping("/change-password")
-    public String changePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("password") String password) {
+    public String changePassword(String oldPassword, String password) {
         User user = getUser();
         boolean successChange;
 
@@ -145,9 +138,8 @@ public class BugTrackerService {
     }
 
 
-    @PostMapping("/manage-roles-update")
-    public String updateRoles(@RequestParam("users") HashSet<Integer> usersId,
-                              @RequestParam("role") int roleId) {
+    public String updateRoles(HashSet<Integer> usersId,
+                              int roleId) {
 
         usersId.forEach(userId -> {
             User user = userService.findUserById(userId);
@@ -163,7 +155,6 @@ public class BugTrackerService {
     }
 
 
-    @GetMapping("/manage-project-users")
     public String manageProjectUsers(Model model) {
 
         List<Project> projects = projectsListSetup(getUser());
@@ -178,9 +169,8 @@ public class BugTrackerService {
     }
 
 
-    @PostMapping("/manage-project-users-update")
-    public String updateProjectUsers(@RequestParam("users") HashSet<Integer> usersId,
-                                     @RequestParam("project") int projectId) {
+    public String updateProjectUsers(HashSet<Integer> usersId,
+                                     int projectId) {
 
         usersId.forEach(userId -> {
             User user = userService.findUserById(userId);
@@ -193,9 +183,8 @@ public class BugTrackerService {
         return "redirect:/manage-project-users";
     }
 
-    @PostMapping("/manage-project-users-delete")
-    public String deleteProjectUsers(@RequestParam("users") HashSet<Integer> usersId,
-                                     @RequestParam("project") int projectId) {
+    public String deleteProjectUsers(HashSet<Integer> usersId,
+                                     int projectId) {
 
         usersId.forEach(userId -> {
             User user = userService.findUserById(userId);
@@ -211,7 +200,6 @@ public class BugTrackerService {
 
     // List all projects
 
-    @GetMapping("/projects")
     public String myProjects(Model model) {
 
         User user = getUser();
@@ -222,8 +210,7 @@ public class BugTrackerService {
 
     }
 
-    @GetMapping("/project-details")
-    public String projectDetails(@RequestParam("projectId") int projectId,
+    public String projectDetails(int projectId,
                                  Model model) {
 
         Project project = projectService.findById(projectId);
@@ -249,10 +236,8 @@ public class BugTrackerService {
     }
 
 
-    // GetMapping to edit single project
 
-    @GetMapping("/project")
-    public String getEditProject(@RequestParam("projectId") int projectId, HttpServletRequest request, Model model) {
+    public String getEditProject(int projectId, Model model) {
         Project project = projectService.findById(projectId);
         User user = getUser();
 
@@ -267,7 +252,6 @@ public class BugTrackerService {
 
     }
 
-    @GetMapping("/new-project")
     public String newProject(Model model) {
 
         List<User> users = userService.findAllUsers();
@@ -277,10 +261,9 @@ public class BugTrackerService {
 
     }
 
-    @PostMapping("/project-save")
-    public String saveProject(@RequestParam("users") HashSet<Integer> usersId,
-                              @RequestParam("name") String projectName,
-                              @RequestParam("description") String description) {
+    public String saveProject(HashSet<Integer> usersId,
+                              String projectName,
+                              String description) {
 
         Project project = new Project(projectName, description);
         projectService.save(project);
@@ -298,10 +281,7 @@ public class BugTrackerService {
         return "redirect:/projects";
     }
 
-    @PostMapping("/project-save-edit")
-    public String saveEditProject(@RequestParam("id") int projectId,
-                                  @RequestParam("name") String projectName,
-                                  @RequestParam("description") String description) {
+    public String saveEditProject(int projectId, String projectName, String description) {
 
         Project project = projectService.findById(projectId);
         project.setName(projectName);
@@ -313,7 +293,6 @@ public class BugTrackerService {
 
     // My Tickets
 
-    @GetMapping("/tickets")
     public String myTickets(Model model) {
 
         List<Ticket> tickets = ticketsListSetup(getUser());
@@ -323,8 +302,7 @@ public class BugTrackerService {
 
     }
 
-    @GetMapping("/ticket-details")
-    public String ticketDetails(@RequestParam("ticketId") int ticketId,
+    public String ticketDetails(int ticketId,
                                 Model model) {
 
         Ticket ticket = ticketService.findById(ticketId);
@@ -348,7 +326,6 @@ public class BugTrackerService {
 
     }
 
-    @GetMapping("/new-ticket")
     public String newTicket(Model model) {
 
         List<User> users = userService.findAllUsers();
@@ -367,8 +344,7 @@ public class BugTrackerService {
 
     }
 
-    @GetMapping("/ticket")
-    public String getEditTicket(@RequestParam("ticketId") Integer ticketId, HttpServletRequest request, Model model) {
+    public String getEditTicket(Integer ticketId, Model model) {
         Ticket ticket = ticketService.findById(ticketId);
 
         User user = getUser();
@@ -417,14 +393,13 @@ public class BugTrackerService {
 
     }
 
-    @PostMapping("/ticket-save")
-    public String saveTicket(@RequestParam("title") String title,
-                             @RequestParam("description") String description,
-                             @RequestParam("project") int projectId,
-                             @RequestParam(value = "user", required = false) Integer userId,
-                             @RequestParam("priority") int priorityId,
-                             @RequestParam("status") int statusId,
-                             @RequestParam("type") int typeId) {
+    public String saveTicket(String title,
+                             String description,
+                             int projectId,
+                             Integer userId,
+                             int priorityId,
+                             int statusId,
+                             int typeId) {
 
         Date date = new Date();
 
@@ -446,12 +421,11 @@ public class BugTrackerService {
         return "redirect:/ticket-details?ticketId=" + ticket.getId();
     }
 
-    @PostMapping("/ticket-save-edit")
-    public String saveEditTicket(@RequestParam("ticket") int ticketId,
-                                 @RequestParam(value = "user", required = false) String userIdString,
-                                 @RequestParam("priority") int priorityId,
-                                 @RequestParam(value = "status", required = false) int statusId,
-                                 @RequestParam(value = "type", required = false) int typeId) {
+    public String saveEditTicket(int ticketId,
+                                 String userIdString,
+                                 int priorityId,
+                                 int statusId,
+                                 int typeId) {
 
         Date date = new Date();
         boolean hasChanged = false;
@@ -525,9 +499,8 @@ public class BugTrackerService {
     }
 
 
-    @PostMapping("/ticket-comment-save")
-    public String saveTicketComment(@RequestParam("ticketId") int ticketId,
-                                    @RequestParam("message") String message) {
+    public String saveTicketComment(int ticketId,
+                                    String message) {
         if(!message.equals("")){
             Ticket ticket = ticketService.findById(ticketId);
             TicketComment ticketComment = new TicketComment(ticket, message, getUser(), new Date());
@@ -537,10 +510,9 @@ public class BugTrackerService {
         return "redirect:/ticket-details?ticketId=" + ticketId;
     }
 
-    @PostMapping("/ticket-file-save")
-    public String saveTicketFile(@RequestParam("ticketId") int ticketId,
-                                 @RequestParam("uploadFile") MultipartFile file,
-                                 @RequestParam("message") String message) {
+    public String saveTicketFile(int ticketId,
+                                 MultipartFile file,
+                                 String message) {
 
         Ticket ticket = ticketService.findById(ticketId);
         TicketFiles ticketFiles = new TicketFiles(ticket, file.getOriginalFilename(), message, getUser(), new Date());
@@ -550,11 +522,7 @@ public class BugTrackerService {
         return "redirect:/ticket-details?ticketId=" + ticketId;
     }
 
-    @GetMapping("/image-resource/{filename}")
-    @ResponseBody
-    public ResponseEntity<byte[]> getImageAsResource(@PathVariable String filename, HttpServletResponse response) throws IOException {
-
-
+    public ResponseEntity<byte[]> getImageAsResource(String filename) throws IOException {
 
         byte[] file = storageService.load("profilePic" ,filename);
 
@@ -563,9 +531,7 @@ public class BugTrackerService {
                 .body(file);
     }
 
-    @GetMapping("/download/{ticketId}/{fileId}")
-    @ResponseBody
-    public ResponseEntity<byte[]> getFile(@PathVariable String ticketId , @PathVariable String fileId, HttpServletResponse response, HttpServletRequest request, Model model) throws IOException{
+    public ResponseEntity<byte[]> getFile(String ticketId , String fileId) throws IOException{
 
         User user = getUser();
 
@@ -609,17 +575,6 @@ public class BugTrackerService {
 
     }
 
-
-    // Error handling
-
-    @GetMapping("/403")
-    public String accessDenied(Model model) {
-
-        // more processing that can be handled with 403 error
-
-        return "403";
-
-    }
 
     // == private functions ==
 

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.kfryc.bugtracker.service.BugTrackerService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -101,9 +99,9 @@ public class BugTrackerController {
     // GetMapping to edit single project
 
     @GetMapping("/project")
-    public String getEditProject(@RequestParam("projectId") int projectId, HttpServletRequest request, Model model) {
+    public String getEditProject(@RequestParam("projectId") int projectId, Model model) {
 
-        return bugTrackerService.getEditProject(projectId, request, model);
+        return bugTrackerService.getEditProject(projectId, model);
     }
 
     @GetMapping("/new-project")
@@ -151,9 +149,9 @@ public class BugTrackerController {
     }
 
     @GetMapping("/ticket")
-    public String getEditTicket(@RequestParam("ticketId") Integer ticketId, HttpServletRequest request, Model model) {
+    public String getEditTicket(@RequestParam("ticketId") Integer ticketId, Model model) {
 
-        return bugTrackerService.getEditTicket(ticketId, request, model);
+        return bugTrackerService.getEditTicket(ticketId, model);
     }
 
     @PostMapping("/ticket-save")
@@ -196,16 +194,16 @@ public class BugTrackerController {
 
     @GetMapping("/image-resource/{filename}")
     @ResponseBody
-    public ResponseEntity<byte[]> getImageAsResource(@PathVariable String filename, HttpServletResponse response) throws IOException {
+    public ResponseEntity<byte[]> getImageAsResource(@PathVariable String filename) throws IOException {
 
-        return bugTrackerService.getImageAsResource(filename, response);
+        return bugTrackerService.getImageAsResource(filename);
     }
 
     @GetMapping("/download/{ticketId}/{fileId}")
     @ResponseBody
-    public ResponseEntity<byte[]> getFile(@PathVariable String ticketId , @PathVariable String fileId, HttpServletResponse response, HttpServletRequest request, Model model) throws IOException{
+    public ResponseEntity<byte[]> getFile(@PathVariable String ticketId , @PathVariable String fileId) throws IOException{
 
-        return bugTrackerService.getFile(ticketId, fileId, response, request, model);
+        return bugTrackerService.getFile(ticketId, fileId);
 
     }
 
