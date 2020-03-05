@@ -7,6 +7,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Date;
 
 
@@ -67,9 +67,9 @@ public class StorageServiceImpl implements StorageService {
                 .withRegion(Regions.EU_CENTRAL_1)
                 .build();
 
-        try{
+        try {
             Files.createDirectories(rootLocation);
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new StorageException("Could not initialize storage location", e);
         }
     }
@@ -78,17 +78,17 @@ public class StorageServiceImpl implements StorageService {
     public String store(MultipartFile file, int ticketId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        try{
-            if(file.isEmpty()){
+        try {
+            if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + fileName);
-            } else if(fileName.contains("..")){
+            } else if (fileName.contains("..")) {
                 // This is a security check
                 throw new StorageException("Cannot store file with relative path outside current directory" + fileName);
             } else {
-                uploadFileTos3bucket(ticketId + "/" + fileName, convertMultiPartToFile(file));
+                uploadFileToS3bucket(ticketId + "/" + fileName, convertMultiPartToFile(file));
             }
 
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new StorageException("Failed to store file " + fileName);
         }
 
@@ -98,7 +98,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public String storeProfilePic(MultipartFile file, User user) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String extension="";
+        String extension = "";
 
         int i = fileName.lastIndexOf('.');
         if (i > 0) {
@@ -106,25 +106,27 @@ public class StorageServiceImpl implements StorageService {
         }
 
         // To avoid clashing of possible names
-        String hash = Math.abs(user.getEmail().hashCode())+extension;
-        try{
-            if(file.isEmpty()){
+        String hash = Math.abs(user.getEmail().hashCode()) + extension;
+        try {
+            if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + fileName);
             }
-            if(fileName.contains("..")){
+            if (fileName.contains("..")) {
                 // This is a security check
                 throw new StorageException("Cannot store file with relative path outside current directory" + fileName);
             }
-            try(InputStream inputStream = file.getInputStream()){
-                if(user.getProfilePic().equals(hash)){
-                    Files.copy(inputStream, this.rootLocation.resolve("profilePic\\"+hash), StandardCopyOption.REPLACE_EXISTING);
-                } else {
-                    Files.delete(this.rootLocation.resolve("profilePic\\"+user.getProfilePic()));
-                    Files.copy(inputStream, this.rootLocation.resolve("profilePic\\"+hash), StandardCopyOption.REPLACE_EXISTING);
-                }
-
+            if (user.getProfilePic().equals(hash)) {
+                uploadFileToS3bucket("profilePic/" + hash, convertMultiPartToFile(file));
+                //Files.copy(inputStream, this.rootLocation.resolve("profilePic\\" + hash), StandardCopyOption.REPLACE_EXISTING);
+            } else {
+                s3client.deleteObject(new DeleteObjectRequest(bucketName, "profilePic/" + hash));
+                uploadFileToS3bucket("profilePic/" + hash, convertMultiPartToFile(file));
+                //Files.delete(this.rootLocation.resolve("profilePic\\" + user.getProfilePic()));
+                //Files.copy(inputStream, this.rootLocation.resolve("profilePic\\" + hash), StandardCopyOption.REPLACE_EXISTING);
             }
-        } catch (IOException e){
+
+
+        } catch (IOException e) {
             throw new StorageException("Failed to store file " + fileName);
         }
 
@@ -133,12 +135,12 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public byte[] load(String dir, String filename) throws IOException {
-        try{
-            s3client.getObject(bucketName, dir+"/"+filename);
-            InputStream in = s3client.getObject(bucketName, dir+"/"+filename).getObjectContent();
+        try {
+            s3client.getObject(bucketName, dir + "/" + filename);
+            InputStream in = s3client.getObject(bucketName, dir + "/" + filename).getObjectContent();
 
             return IOUtils.toByteArray(in);
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             throw new RuntimeException("Failed to load image");
         }
     }
@@ -152,7 +154,7 @@ public class StorageServiceImpl implements StorageService {
         return convFile;
     }
 
-    private void uploadFileTos3bucket(String fileName, File file) {
+    private void uploadFileToS3bucket(String fileName, File file) {
         s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }

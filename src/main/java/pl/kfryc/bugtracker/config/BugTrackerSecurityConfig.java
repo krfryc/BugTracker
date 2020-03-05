@@ -36,8 +36,8 @@ public class BugTrackerSecurityConfig extends WebSecurityConfigurerAdapter imple
         http.authorizeRequests()//.anyRequest().permitAll();
 
                 // IMPORTANT code: .antMatchers("/resources/**").permitAll() !!!
-                // Otherwise the css, js will not work!
-                .antMatchers("/**/*.js", "/**/*.css").permitAll()
+                // Otherwise the css, js and map will not work!
+                .antMatchers("/**/*.js", "/**/*.css", "/**/*.map").permitAll()
                 // enable Font Awesome fonts
                 .antMatchers("/**/*.eot", "/**/*.svg", "/**/*.ttf", "/**/*.woff", "/**/*.woff2", "/**/*.less").permitAll()
                 // Enable registration page
