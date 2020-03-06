@@ -35,12 +35,9 @@ public class BugTrackerSecurityConfig extends WebSecurityConfigurerAdapter imple
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()//.anyRequest().permitAll();
 
-                // IMPORTANT code: .antMatchers("/resources/**").permitAll() !!!
-                // Otherwise the css, js and map will not work!
                 .antMatchers("/**/*.js", "/**/*.css", "/**/*.map").permitAll()
                 // enable Font Awesome fonts
                 .antMatchers("/**/*.eot", "/**/*.svg", "/**/*.ttf", "/**/*.woff", "/**/*.woff2", "/**/*.less").permitAll()
-                // Enable registration page
                 .antMatchers("/register").permitAll()
                 .antMatchers("/save").permitAll()
                 .antMatchers("/manage-roles", "/manage-roles-update").hasAuthority("Admin")
